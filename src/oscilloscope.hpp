@@ -181,6 +181,7 @@ namespace adiscope {
 		void onStatisticSelectionListChanged();
 		void onStatisticsEnabled(bool on);
 		void onStatisticsReset();
+		void onGatingEnabled(bool on);
 
 		void onCursorReadoutsChanged(struct cursorReadoutsText);
 
@@ -317,6 +318,7 @@ namespace adiscope {
 
 		bool hCursorsEnabled;
 		bool vCursorsEnabled;
+		bool gatingEnabled;
 
 		std::vector<bool> chnAcCoupled;
 		bool triggerAcCoupled;
