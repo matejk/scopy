@@ -703,6 +703,8 @@ Oscilloscope::Oscilloscope(struct iio_context *ctx, Filter *filt,
 		ui->btnTrigger->setChecked(false);
 	}
 
+	connect(&plot,SIGNAL(leftGateChanged(double)),SLOT(onLeftGateChanged(double)));
+	connect(&plot,SIGNAL(rightGateChanged(double)),SLOT(onRightGateChanged(double)));
 }
 
 void Oscilloscope::init_buffer_scrolling()
@@ -2297,6 +2299,7 @@ void adiscope::Oscilloscope::on_boxMeasure_toggled(bool on)
 	if (ui->boxCursors->isChecked())
 		plot.setCursorReadoutsVisible(!on);
 	plot.setGatingEnabled(on && gatingEnabled);
+	buffer_previewer->setGatingEnabled(on && gatingEnabled);
 
 }
 
@@ -3639,6 +3642,16 @@ void Oscilloscope::onGatingEnabled(bool on){
 	gatingEnabled = on;
 	buffer_previewer->setGatingEnabled(on);
 	plot.setGatingEnabled(on);
+}
+
+void Oscilloscope::onLeftGateChanged(double width)
+{
+	buffer_previewer->setLeftGateWidth(width);
+}
+
+void Oscilloscope::onRightGateChanged(double width)
+{
+	buffer_previewer->setRightGateWidth(width);
 }
 
 void Oscilloscope::setupAutosetFreqSweep()
