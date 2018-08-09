@@ -100,12 +100,15 @@ CapturePlot::CapturePlot(QWidget *parent,
 
 	/* Adjacent areas (top/bottom/left/right) */
 	d_topWidget = new QWidget(this);
+	d_topHandlesArea = new HorizHandlesArea(this->canvas());
 	d_bottomHandlesArea = new HorizHandlesArea(this->canvas());
 	d_leftHandlesArea = new VertHandlesArea(this->canvas());
 	d_rightHandlesArea = new VertHandlesArea(this->canvas());
 
 	d_topWidget->setStyleSheet("QWidget {background-color: transparent}");
 	d_topWidget->setMinimumHeight(50);
+	d_topHandlesArea->setMinimumHeight(30);
+	d_topHandlesArea->setLargestChildWidth(60);
 	d_bottomHandlesArea->setMinimumHeight(50);
 	d_leftHandlesArea->setMinimumWidth(50);
 	d_rightHandlesArea->setMinimumWidth(50);
@@ -114,6 +117,7 @@ CapturePlot::CapturePlot(QWidget *parent,
 	d_leftHandlesArea->setMinimumHeight(this->minimumHeight());
 	d_rightHandlesArea->setMinimumHeight(this->minimumHeight());
 
+	d_topHandlesArea->hide();
 	/* Add content to the top area of the plot */
 	// Time Base
 	d_timeBaseLabel = new QLabel(this);
@@ -286,11 +290,11 @@ CapturePlot::CapturePlot(QWidget *parent,
 
 	d_hGatingHandle1 = new PlotGateHandle(
 				QPixmap(":/icons/h_cursor_handle.svg"),
-				d_bottomHandlesArea);
+				d_topHandlesArea);
 
 	d_hGatingHandle2 = new PlotGateHandle(
 				QPixmap(":/icons/h_cursor_handle.svg"),
-				d_bottomHandlesArea);
+				d_topHandlesArea);
 
 	d_vBar1 = new VertBar(this, true);
 	d_vBar2 = new VertBar(this, true);
@@ -735,6 +739,11 @@ QWidget * CapturePlot::topArea()
 	return d_topWidget;
 }
 
+QWidget * CapturePlot::topHandlesArea()
+{
+	return d_topHandlesArea;
+}
+
 QWidget * CapturePlot::bottomHandlesArea()
 {
 	return d_bottomHandlesArea;
@@ -1011,20 +1020,27 @@ void CapturePlot::setGatingEnabled(bool enabled){
 		d_gateBar2->setVisible(enabled);
 		d_hGatingHandle1->setVisible(enabled);
 		d_hGatingHandle2->setVisible(enabled);
+		updateHandleAreaPadding(d_labelsEnabled);
+
 		if(enabled){
 			leftGate->attach(this);
 			rightGate->attach(this);
+			d_topHandlesArea->show();
 			onGateBar1Moved(leftGateRect.right());
 			onGateBar2Moved(rightGateRect.left());
 		}
 		else{
 			leftGate->detach();
 			rightGate->detach();
+			d_topHandlesArea->hide();
 		}
 		for (int i = 0; i < d_measureObjs.size(); i++) {
 			Measure *measure = d_measureObjs[i];
 			measure->setGatingEnabled(enabled);
 		}
+		d_gateBar1->triggerMove();
+		d_gateBar2->triggerMove();
+
 		replot();
 	}
 }
@@ -1094,19 +1110,27 @@ void CapturePlot::updateHandleAreaPadding(bool enabled)
 {
 	if (enabled) {
 		d_bottomHandlesArea->setLeftPadding(50 + axisWidget(QwtAxisId(QwtPlot::yLeft, d_activeVertAxis))->width());
+		d_topHandlesArea->setLeftPadding(50 + axisWidget(QwtAxisId(QwtPlot::yLeft, d_activeVertAxis))->width());
 		QwtScaleWidget *scaleWidget = axisWidget(QwtPlot::xBottom);
 		const int fmw = QFontMetrics(scaleWidget->font()).width("-XX.XX XX");
 		const int fmh = QFontMetrics(scaleWidget->font()).height();
 		d_bottomHandlesArea->setRightPadding(50 + fmw/2);
-		d_rightHandlesArea->setTopPadding(50 + 6);
+		d_topHandlesArea->setRightPadding(50 + fmw/2);
+		int topPadding = (!d_gatingEnabled) ? 0 : d_topHandlesArea->height();
+		d_rightHandlesArea->setTopPadding(50 + 6 + topPadding);
 		d_rightHandlesArea->setBottomPadding(50 + fmh);
 	} else {
+		if(d_topHandlesArea->leftPadding() != 50)
+			d_topHandlesArea->setLeftPadding(50);
+		if(d_topHandlesArea->rightPadding() != 50)
+			d_topHandlesArea->setRightPadding(50);
 		if (d_bottomHandlesArea->leftPadding() != 50)
 			d_bottomHandlesArea->setLeftPadding(50);
 		if (d_bottomHandlesArea->rightPadding() != 50)
 			d_bottomHandlesArea->setRightPadding(50);
-		if (d_rightHandlesArea->topPadding() != 50)
-			d_rightHandlesArea->setTopPadding(50);
+		int topPadding = (!d_gatingEnabled) ? 0 : d_topHandlesArea->height();
+		if (d_rightHandlesArea->topPadding() != 50 + topPadding)
+			d_rightHandlesArea->setTopPadding(50 + topPadding);
 		if (d_rightHandlesArea->bottomPadding() != 50)
 			d_rightHandlesArea->setBottomPadding(50);
 	}
