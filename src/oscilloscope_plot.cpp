@@ -1119,6 +1119,9 @@ void CapturePlot::updateHandleAreaPadding(bool enabled)
 		int topPadding = (!d_gatingEnabled) ? 0 : d_topHandlesArea->height();
 		d_rightHandlesArea->setTopPadding(50 + 6 + topPadding);
 		d_rightHandlesArea->setBottomPadding(50 + fmh);
+		QMargins margins = d_topWidget->layout()->contentsMargins();
+		margins.setLeft(d_leftHandlesArea->minimumWidth()+100);
+		d_topWidget->layout()->setContentsMargins(margins);
 	} else {
 		if(d_topHandlesArea->leftPadding() != 50)
 			d_topHandlesArea->setLeftPadding(50);
@@ -1133,6 +1136,9 @@ void CapturePlot::updateHandleAreaPadding(bool enabled)
 			d_rightHandlesArea->setTopPadding(50 + topPadding);
 		if (d_rightHandlesArea->bottomPadding() != 50)
 			d_rightHandlesArea->setBottomPadding(50);
+		QMargins margins = d_topWidget->layout()->contentsMargins();
+		margins.setLeft(d_leftHandlesArea->minimumWidth());
+		d_topWidget->layout()->setContentsMargins(margins);
 	}
 }
 
