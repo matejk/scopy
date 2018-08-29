@@ -482,6 +482,7 @@ CapturePlot::CapturePlot(QWidget *parent,
 	connect(d_gateBar2,SIGNAL(positionChanged(double)),
 			SLOT(onGateBar2Moved(double)));
 
+
 	/* Apply measurements for every new batch of data */
 	connect(this, SIGNAL(newData()),
 		SLOT(onNewDataReceived()));
@@ -721,6 +722,7 @@ void CapturePlot::onGateBar1Moved(double value)
 		measure->setStartIndex(currentIndex);
 	}
 
+	value_gateLeft = value;
 	//find the percentage of the gate in relation with plot width
 	double width = (value - axisScaleDiv(xBottom).lowerBound()) / (axisScaleDiv(xBottom).upperBound() - axisScaleDiv(xBottom).lowerBound());
 	Q_EMIT leftGateChanged(width);
@@ -750,6 +752,7 @@ void CapturePlot::onGateBar2Moved(double value)
 		measure->setEndIndex(currentIndex);
 	}
 
+	value_gateRight = value;
 	//find the percentage of the gate in relation with plot width
 	double width = (axisScaleDiv(xBottom).upperBound() - value) / (axisScaleDiv(xBottom).upperBound() - axisScaleDiv(xBottom).lowerBound());
 	Q_EMIT rightGateChanged(width);
