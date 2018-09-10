@@ -196,7 +196,7 @@ color: rgba(255, 255, 255, 70);
   background-color: transparent;
   font-size: 14px;
   font-weight: bold;
-  
+
   color: rgba(255, 255, 255, 153);
 }
 
@@ -343,7 +343,7 @@ color: rgba(255, 255, 255, 70);
   background-color: transparent;
   font-size: 14px;
   font-weight: bold;
-  
+
   color: rgba(255, 255, 255, 153);
 }
 
@@ -421,7 +421,7 @@ QCheckBox::indicator:checked { background-color: rgb(74,100,255); }</string>
   background-color: transparent;
   font-size: 14px;
   font-weight: bold;
-  
+
   color: rgba(255, 255, 255, 153);
 }
 
@@ -448,6 +448,78 @@ QCheckBox::indicator:checked { background-color: rgb(74,100,255); }</string>
                 </item>
                 <item>
                  <spacer name="horizontalSpacer_9">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <spacer name="verticalSpacer_12">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeType">
+                 <enum>QSizePolicy::Fixed</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>5</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_18">
+                <property name="spacing">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <item>
+                 <widget class="QCheckBox" name="histCheckBox">
+                  <property name="styleSheet">
+                   <string notr="true">QCheckBox {
+  spacing: 8px;
+  background-color: transparent;
+  font-size: 14px;
+  font-weight: bold;
+
+  color: rgba(255, 255, 255, 153);
+}
+
+QCheckBox::indicator {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgb(74,100,255);
+  border-radius: 4px;
+}
+QCheckBox::indicator:unchecked { background-color: transparent; }
+QCheckBox::indicator:checked { background-color: rgb(74,100,255); }</string>
+                  </property>
+                  <property name="text">
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_17">
+                  <property name="text">
+                   <string>Enable on plot histogram</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="horizontalSpacer_13">
                   <property name="orientation">
                    <enum>Qt::Horizontal</enum>
                   </property>
@@ -496,7 +568,7 @@ QCheckBox::indicator:checked { background-color: rgb(74,100,255); }</string>
   background-color: transparent;
   font-size: 14px;
   font-weight: bold;
-  
+
   color: rgba(255, 255, 255, 153);
 }
 
@@ -563,7 +635,7 @@ QCheckBox::indicator:checked { background-color: rgb(74,100,255); }</string>
   background-color: transparent;
   font-size: 14px;
   font-weight: bold;
-  
+
   color: rgba(255, 255, 255, 153);
 }
 
@@ -874,7 +946,7 @@ color: rgba(255, 255, 255, 70);
   background-color: transparent;
   font-size: 14px;
   font-weight: bold;
-  
+
   color: rgba(255, 255, 255, 153);
 }
 
@@ -936,7 +1008,7 @@ QCheckBox::indicator:checked { background-color: rgb(74,100,255); }</string>
   background-color: transparent;
   font-size: 14px;
   font-weight: bold;
-  
+
   color: rgba(255, 255, 255, 153);
 }
 
@@ -1086,7 +1158,7 @@ color: rgba(255, 255, 255, 70);
   background-color: transparent;
   font-size: 14px;
   font-weight: bold;
-  
+
   color: rgba(255, 255, 255, 153);
 }
 
@@ -1317,7 +1389,7 @@ color: white;
   background-color: transparent;
   font-size: 14px;
   font-weight: bold;
-  
+
   color: rgba(255, 255, 255, 153);
 }
 
@@ -1455,7 +1527,7 @@ QCheckBox::indicator:checked { background-color: rgb(74,100,255); }</string>
 
 QPushButton:hover
 {
-	 background-color: #4a34ff;
+         background-color: #4a34ff;
 }</string>
           </property>
           <property name="text">

@@ -45,7 +45,8 @@ Preferences::Preferences(QWidget *parent) :
 	debugger_enabled(false),
 	manual_calib_enabled(false),
 	graticule_enabled(false),
-	animations_enabled(true)
+	animations_enabled(true),
+	mini_hist_enabled(false)
 {
 	ui->setupUi(this);
 
@@ -112,17 +113,20 @@ Preferences::Preferences(QWidget *parent) :
 		manual_calib_script_enabled = (!state ? false : true);
 		Q_EMIT notify();
 	});
-
 	connect(ui->enableAnimCheckBox, &QCheckBox::stateChanged, [=](int state) {
 		animations_enabled = (!state ? false : true);
 		Q_EMIT notify();
 	});
+	connect(ui->histCheckBox, &QCheckBox::stateChanged, [=](int state){
+		mini_hist_enabled = (!state ? false : true);
+		Q_EMIT notify();
+	});
+
 	QString preference_ini_file = getPreferenceIniFile();
 	QSettings settings(preference_ini_file, QSettings::IniFormat);
 
 	pref_api->setObjectName(QString("Preferences"));
 	pref_api->load(settings);
-
 }
 
 Preferences::~Preferences()
@@ -155,6 +159,7 @@ void Preferences::showEvent(QShowEvent *event)
 	ui->extScriptCheckBox->setChecked(external_script_enabled);
 	ui->manualCalibCheckBox->setChecked(manual_calib_script_enabled);
 	ui->enableAnimCheckBox->setChecked(animations_enabled);
+	ui->histCheckBox->setChecked(mini_hist_enabled);
 
 	QWidget::showEvent(event);
 }
@@ -189,6 +194,16 @@ bool Preferences::getAnimations_enabled() const
 void Preferences::setAnimations_enabled(bool value)
 {
     animations_enabled = value;
+}
+
+bool Preferences::getMini_hist_enabled() const
+{
+	return mini_hist_enabled;
+}
+
+void Preferences::setMini_hist_enabled(bool value)
+{
+	mini_hist_enabled = value;
 }
 
 bool Preferences::getAdvanced_device_info() const
@@ -443,4 +458,14 @@ bool Preferences_API::getManualCalibScript() const
 void Preferences_API::setManualCalibScript(const bool &enabled)
 {
 	preferencePanel->manual_calib_script_enabled = enabled;
+}
+
+bool Preferences_API::getMiniHist() const
+{
+	return preferencePanel->mini_hist_enabled;
+}
+
+void Preferences_API::setMiniHist(const bool &enabled)
+{
+	preferencePanel->mini_hist_enabled = enabled;
 }
