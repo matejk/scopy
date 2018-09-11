@@ -3927,6 +3927,7 @@ void Oscilloscope::singleCaptureDone()
 
 	periodicFlowRestart();
 	plot.repositionCursors();
+	scaleHistogramPlot(true);
 
 	if(autosetRequested)
 	{
@@ -3937,8 +3938,12 @@ void Oscilloscope::singleCaptureDone()
 	}
 }
 
-void Oscilloscope::scaleHistogramPlot()
+void Oscilloscope::scaleHistogramPlot(bool newData)
 {
+	if (hist_plot.isZoomed() && newData) {
+		return;
+	}
+
 	for (int i = 0; i < nb_channels; i++) {
 		double min = plot.axisInterval(QwtAxisId(QwtPlot::yLeft, i)).minValue();
 		double max = plot.axisInterval(QwtAxisId(QwtPlot::yLeft, i)).maxValue();
