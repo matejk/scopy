@@ -95,6 +95,7 @@ private:
 	bool m_alignLeft;
 	double m_timeValue;
 	adiscope::TimePrefixFormatter d_timeFormatter;
+	bool positionReachedLimit(int position);
 };
 
 class PlotLineHandleH: public PlotLineHandle

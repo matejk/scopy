@@ -24,6 +24,7 @@
 #include <QMoveEvent>
 
 #include <QDebug>
+#include <iostream>
 
 PlotLineHandle::PlotLineHandle(const QPixmap &handleIcon, QWidget *parent):
 	QWidget(parent),
@@ -123,6 +124,24 @@ void PlotGateHandle::updatePosition()
 	moveSilently(QPoint(0, centerPosToOrigin(m_current_pos)));
 }
 
+bool PlotGateHandle::positionReachedLimit(int position)
+{
+	HorizHandlesArea *area = static_cast<HorizHandlesArea *>(parent());
+
+	int lower_limit = 0 + area->leftPadding() - width() / 2 + width();
+	int upper_limit = area->width() - area->rightPadding() - width() - 1;
+
+	if (position <= lower_limit /*&& !m_alignLeft*/){
+		return true;//handle hit the margin
+	}
+	else if (position >= upper_limit /*&& m_alignLeft*/){
+		return true;//handle hit the margin
+	}
+	else{
+		return false;
+	}
+}
+
 void PlotGateHandle::moveWithinParent(int x, int y)
 {
 	Q_UNUSED(y);
@@ -158,18 +177,35 @@ void PlotGateHandle::moveWithinParent(int x, int y)
 	}
 
 	if (centerPos != oldCenterPos) {
+		bool reachedLimit = positionReachedLimit(m_otherCursorPos)
+				| positionReachedLimit(m_otherCursorPos);
 		if(!m_reachLimit){
-			if(x < m_otherCursorPos + width() && !m_alignLeft){
-				/*move the handle only if it doens't hit the other handle */
-				move(x, this->y());
-			}
-			else if(x > m_otherCursorPos + 1.5*width() && m_alignLeft){
-				/*move the handle only if it doens't hit the other handle */
-				move(x,this->y());
-			}
-			else{/* remember bar position */
-				centerPos = oldCurrentPos;
-				m_current_pos = centerPos;
+			if (reachedLimit) {
+				if(x < upper_limit - width() && !m_alignLeft){
+					/*move the handle only if it doens't hit the other handle */
+					move(x, this->y());
+				}
+				else if(x > lower_limit + width() && m_alignLeft){
+					/*move the handle only if it doens't hit the other handle */
+					move(x,this->y());
+				}
+				else{/* remember bar position */
+					centerPos = oldCurrentPos;
+					m_current_pos = centerPos;
+				}
+			} else {
+				if(x < m_otherCursorPos /*- 1.5 * width()*/ && !m_alignLeft){
+					/*move the handle only if it doens't hit the other handle */
+					move(x, this->y());
+				}
+				else if(x > m_otherCursorPos /*+ 1.5 * width()*/ && m_alignLeft){
+					/*move the handle only if it doens't hit the other handle */
+					move(x,this->y());
+				}
+				else{/* remember bar position */
+					centerPos = oldCurrentPos;
+					m_current_pos = centerPos;
+				}
 			}
 		}
 		else{
@@ -185,7 +221,8 @@ void PlotGateHandle::moveWithinParent(int x, int y)
 
 	}
 	else{
-		if(m_reachLimit){//update only the bar position if the handle reached a margin
+		if(m_reachLimit && !m_enable_silent_move){//update only the bar position if the handle reached a margin
+
 			Q_EMIT positionChanged(originPosToCenter(m_position));
 		}
 	}

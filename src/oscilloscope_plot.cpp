@@ -1175,6 +1175,9 @@ void CapturePlot::updateHandleAreaPadding(bool enabled)
 
 	d_vCursorHandle1->updatePosition();
 	d_vCursorHandle2->updatePosition();
+
+//	d_hGatingHandle1->updatePosition();
+//	d_hGatingHandle2->updatePosition();
 }
 
 double CapturePlot::getHorizontalCursorIntersection(double time)
@@ -1293,6 +1296,9 @@ bool CapturePlot::eventFilter(QObject *object, QEvent *event)
 	if (object == canvas() && event->type() == QEvent::Resize) {
 		updateHandleAreaPadding(d_labelsEnabled);
 
+		/* update the size of the gates when the plot canvas is resized */
+		updateGateMargins();
+
 		//force cursor handles to emit position changed
 		//when the plot canvas is being resized
 		d_hCursorHandle1->triggerMove();
@@ -1300,13 +1306,24 @@ bool CapturePlot::eventFilter(QObject *object, QEvent *event)
 		d_vCursorHandle1->triggerMove();
 		d_vCursorHandle2->triggerMove();
 
-		/* update the size of the gates when the plot canvas is resized */
-		updateGateMargins();
+
+
+		d_hGatingHandle1->setPositionSilenty(d_hGatingHandle1->position());
+		d_hGatingHandle2->setPositionSilenty(d_hGatingHandle2->position());
+
 
 		Q_EMIT canvasSizeChanged();
 
+//		d_hGatingHandle1->updatePosition();
+//		d_hGatingHandle2->updatePosition();
+
 	}
-	return QObject::eventFilter(object, event);
+	bool ret = QObject::eventFilter(object, event);
+//	if (object == canvas() && event->type() == QEvent::Resize) {
+//		d_hGatingHandle1->updatePosition();
+//		d_hGatingHandle2->updatePosition();
+//	}
+	return ret;
 }
 
 void CapturePlot::onChannelAdded(int chnIdx)
