@@ -63,7 +63,7 @@ void OscScaleDraw::setFloatPrecision(unsigned int numDigits)
 	m_floatPrecision = numDigits;
 }
 
-unsigned int OscScaleDraw::getFloatPrecison()
+unsigned int OscScaleDraw::getFloatPrecison() const
 {
 	return m_floatPrecision;
 }
