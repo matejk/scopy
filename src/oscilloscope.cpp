@@ -963,12 +963,13 @@ void Oscilloscope::readPreferences()
 			/* At least one channel is enabled,
 			 * so we can enable/disable labels */
 			enableLabels(prefPanel->getOsc_labels_enabled());
-			return;
+			break;
 		}
 	}
 
 	/* No channel is enabled, so we disable the labels */
 	enableLabels(false);
+	m2k_adc->setFilteringEnabled(prefPanel->getOsc_filtering_enabled());
 }
 
 void Oscilloscope::init_channel_settings()
@@ -4110,8 +4111,8 @@ void Oscilloscope::writeAllSettingsToHardware()
 			m2k_adc->setChnHwGainMode(i, mode);
 		}
 
-		iio_device_attr_write_longlong(adc->iio_adc_dev(),
-			"oversampling_ratio", 1);
+		/*iio_device_attr_write_longlong(adc->iio_adc_dev(),
+			"oversampling_ratio", 1);*/
 	}
 
 	// Writes all trigger settings to hardware
