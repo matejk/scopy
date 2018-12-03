@@ -2841,7 +2841,7 @@ void adiscope::Oscilloscope::onTimePositionChanged(double value)
 		horiz_offset = value;
 	}
 
-	if (active_sample_rate == adc->sampleRate() &&
+	if (active_sample_rate == m2k_adc->readSampleRate() &&
 			(active_plot_sample_count == oldSampleCount))
 		return;
 
@@ -3947,9 +3947,9 @@ void Oscilloscope::updateBufferPreviewer()
 	long long totalSamples = last_set_sample_count;
 
 	if (totalSamples > 0) {
-		dataInterval.setMinValue(triggerSamples / adc->sampleRate());
+		dataInterval.setMinValue(triggerSamples / m2k_adc->readSampleRate());
 		dataInterval.setMaxValue((triggerSamples + totalSamples)
-			/ adc->sampleRate());
+			/ m2k_adc->readSampleRate());
 	}
 
 	// Use the two intervals to determine the width and position of the
