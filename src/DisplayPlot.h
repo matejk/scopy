@@ -585,6 +585,8 @@ public:
 
 	void setDisplayScale(double value);
 
+	void enableDeltaLabel(bool enable);
+
 protected:
 	virtual void draw(QPainter *, const QPalette &) const;
 
@@ -596,6 +598,7 @@ private:
 	double m_displayScale;
 	mutable unsigned int m_nrTicks;
 	mutable bool m_shouldDrawMiddleDelta;
+	bool m_delta;
 
 };
 

@@ -48,7 +48,8 @@ OscScaleDraw::OscScaleDraw(const QString &unit) : QwtScaleDraw(),
 	m_color(Qt::gray),
 	m_displayScale(1),
 	m_shouldDrawMiddleDelta(false),
-	m_nrTicks(0)
+	m_nrTicks(0),
+	m_delta(false)
 {
 	enableComponent(QwtAbstractScaleDraw::Backbone, false);
 	enableComponent(QwtAbstractScaleDraw::Ticks, false);
@@ -95,19 +96,21 @@ void OscScaleDraw::setDisplayScale(double value)
 	m_displayScale = value;
 }
 
+void OscScaleDraw::enableDeltaLabel(bool enable)
+{
+	if (enable != m_delta) {
+		m_delta = enable;
+
+		// Trigger a new redraw of the scale
+		invalidateCache();
+	}
+}
+
 void OscScaleDraw::draw(QPainter *painter, const QPalette &) const
 {
 	int nrMajorTicks = scaleDiv().ticks(QwtScaleDiv::MajorTick).size();
 
 	m_nrTicks = nrMajorTicks;
-
-	double lower = scaleDiv().interval().minValue();
-	double upper = scaleDiv().interval().maxValue();
-	double diff = upper - lower;
-	double middle = (upper + lower) / 2;
-	double step = diff / (m_nrTicks - 1);
-
-	m_shouldDrawMiddleDelta = (middle > (step * 100));
 
 	QList<double> ticks = scaleDiv().ticks(QwtScaleDiv::MajorTick);
 	QList<QRect> labels;
@@ -141,7 +144,7 @@ void OscScaleDraw::draw(QPainter *painter, const QPalette &) const
 		}
 
 		if (overlap) {
-			if (m_shouldDrawMiddleDelta) {
+			if (m_delta) {
 				// If the middle delta label is to be drawn we are sure that
 				// ticks.size() is an odd number
 				int center = midLabelPos;
@@ -168,12 +171,9 @@ void OscScaleDraw::draw(QPainter *painter, const QPalette &) const
 
 	double delta = -INFINITY;
 
-	if (m_shouldDrawMiddleDelta && m_nrTicks > midLabelPos) {
+	if (m_delta && m_nrTicks > midLabelPos) {
 		delta = scaleDiv().ticks(QwtScaleDiv::MajorTick)[midLabelPos];
-		bool temp = m_shouldDrawMiddleDelta;
-		m_shouldDrawMiddleDelta = false;
 		drawLabel(painter, delta);
-		m_shouldDrawMiddleDelta = temp;
 	}
 
 	for (const auto &tick : ticks) {
@@ -181,8 +181,6 @@ void OscScaleDraw::draw(QPainter *painter, const QPalette &) const
 			drawLabel(painter, tick);
 		}
 	}
-
-	m_shouldDrawMiddleDelta = false;
 }
 
 
@@ -197,12 +195,11 @@ QwtText OscScaleDraw::label( double value ) const
 	double lower = scaleDiv().interval().minValue();
 	double upper = scaleDiv().interval().maxValue();
 	double diff = upper - lower;
-	double middle = (upper + lower) / 2;
 	double step = diff / (m_nrTicks ? (m_nrTicks - 1) : 1);
 
 	int mid = (m_nrTicks / 2 + 1);
 
-	if (middle > (100 * step)) {
+	if (m_delta) {
 		int current = 0;
 		while (value > (lower + current * step)) current++;
 		int position = current + 1;
@@ -253,7 +250,6 @@ QwtText OscScaleDraw::label( double value ) const
 	if (center) {
 		text.setColor(QColor(255, 255,255));
 	}
-
 
 	return text;
 }
