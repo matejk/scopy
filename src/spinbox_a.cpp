@@ -138,6 +138,28 @@ void SpinBoxA::updateCompletionCircle(double value)
 	ui->SBA_CompletionCircle->setValueDouble(value);
 }
 
+void SpinBoxA::silentSetValue(double value)
+{
+	// Set the value for the spinBox w/o
+	// emitting any signals.
+	QSignalBlocker signalBlocker(this);
+	setValue(value);
+}
+
+void SpinBoxA::silentSetMinValue(double value)
+{
+	// Set the minimum value w/o emitting any signals
+	QSignalBlocker signalBlocker(this);
+	setMinValue(value);
+}
+
+void SpinBoxA::silentSetMaxValue(double value)
+{
+	// Set the maximum value w/o emitting any signals
+	QSignalBlocker signalBlocker(this);
+	setMaxValue(value);
+}
+
 void SpinBoxA::onUpButtonPressed()
 {
 	stepUp();
@@ -554,7 +576,8 @@ ScaleSpinButton::ScaleSpinButton(vector<pair<QString, double> >units,
 	         hasProgressWidget, invertCircle, parent),
 	m_steps(1E-3, 1E+3, 10,
 	        steps),
-	m_fine_increment(1)
+	m_fine_increment(1),
+	m_numberSeriesRebuild(true)
 {
 	ui->SBA_CompletionCircle->setIsLogScale(true);
 
@@ -564,7 +587,9 @@ ScaleSpinButton::ScaleSpinButton(vector<pair<QString, double> >units,
 
 void ScaleSpinButton::setMinValue(double value)
 {
-	m_steps.setLower(value);
+	if (m_numberSeriesRebuild) {
+		m_steps.setLower(value);
+	}
 	SpinBoxA::setMinValue(value);
 
 	if (m_value == m_min_value) {
@@ -576,7 +601,9 @@ void ScaleSpinButton::setMinValue(double value)
 
 void ScaleSpinButton::setMaxValue(double value)
 {
-	m_steps.setUpper(value);
+	if (m_numberSeriesRebuild) {
+		m_steps.setUpper(value);
+	}
 	SpinBoxA::setMaxValue(value);
 
 	if (m_value == m_max_value) {
@@ -584,6 +611,11 @@ void ScaleSpinButton::setMaxValue(double value)
 	} else {
 		ui->SBA_UpButton->setEnabled(true);
 	}
+}
+
+void ScaleSpinButton::enableNumberSeriesRebuild(bool enable)
+{
+	m_numberSeriesRebuild = enable;
 }
 
 void ScaleSpinButton::stepUp()
