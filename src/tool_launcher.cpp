@@ -267,6 +267,12 @@ ToolLauncher::ToolLauncher(QWidget *parent) :
 		ui->prefBtn->setText(opened ? "Preferences" : "");
 	});
 
+	connect(ui->btnCrash,&QPushButton::clicked, [=]() {
+		auto x=5/0;
+		qDebug()<<x;
+	}
+	);
+
 	connect(ui->stackedWidget, SIGNAL(moved(int)),
 		this, SLOT(pageMoved(int)));
 
