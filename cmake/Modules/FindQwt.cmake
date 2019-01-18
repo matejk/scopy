@@ -50,8 +50,10 @@ if(QWT_INCLUDE_DIRS)
   else(NOT QWT_WRONG_VERSION)
     message(STATUS "QWT Version must be >= 5.2 and <= 6.2.0, Found ${QWT_VERSION}")
   endif(NOT QWT_WRONG_VERSION)
-
 endif(QWT_INCLUDE_DIRS)
+
+message(STATUS "QWT include dirs: ${QWT_INCLUDE_DIRS}")
+message(STATUS "QWT lib dirs: ${QWT_LIBRARIES}")
 
 if(QWT_FOUND)
   # handle the QUIETLY and REQUIRED arguments and set QWT_FOUND to TRUE if

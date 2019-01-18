@@ -71,7 +71,7 @@ if (NOT CMAKE_BUILD_TYPE)
 	set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS None Debug Release RelWithDebInfo MinSizeRel)
 endif()
 
-if (NOT "${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
+if ("${CMAKE_BUILD_TYPE}" STREQUAL "Release")
 	add_definitions(-DQT_NO_DEBUG_OUTPUT=1)
 endif()
 
