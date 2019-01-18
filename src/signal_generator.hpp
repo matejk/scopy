@@ -151,8 +151,8 @@ private:
 	Ui::SignalGenerator *ui;
 	OscilloscopePlot *plot;
 	gr::top_block_sptr top_block;
-	struct time_block_data *time_block_data;
-	struct iio_channel *amp1, *amp2;
+    struct time_block_data *time_block_data = nullptr;
+    struct iio_channel *amp1 = nullptr, *amp2 = nullptr;
 	QList<std::shared_ptr<GenericDac>> dacs;
 
 	PhaseSpinButton *phase, *filePhase;

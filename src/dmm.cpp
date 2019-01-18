@@ -625,6 +625,8 @@ void DMM::setHistorySizeCh2(int idx)
 
 void DMM::writeAllSettingsToHardware()
 {
+    return;
+
 	adc->setSampleRate(sample_rate);
 
 	auto m2k_adc = std::dynamic_pointer_cast<M2kAdc>(adc);

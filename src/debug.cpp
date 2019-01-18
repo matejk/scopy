@@ -118,6 +118,9 @@ void Debug::scanChannels(const QString& devName)
 
 	if (connected) {
 		device = iio_context_find_device(ctx, devName.toLatin1().data());
+        if (!device) {
+            return;
+        }
 		nb_channels = iio_device_get_channels_count(device);
 
 		channelList.clear();
@@ -159,6 +162,9 @@ void Debug::scanChannelAttributes(QString devName, QString& channel)
 		}
 
 		device = iio_context_find_device(ctx, devName.toLatin1().data());
+        if (!device) {
+            return;
+        }
 		attributeList.clear();
 		attributeAvailable.clear();
 		filename.clear();

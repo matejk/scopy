@@ -1619,7 +1619,7 @@ bool adiscope::ToolLauncher::switchContext(const QString& uri)
 		});
 	}
 
-
+#if 0
 	if (filter->compatible(TOOL_POWER_CONTROLLER)) {
 		power_control = new PowerController(ctx, toolMenu["Power Supply"]->getToolStopBtn(),
 				&js_engine, this);
@@ -1628,7 +1628,7 @@ bool adiscope::ToolLauncher::switchContext(const QString& uri)
 			toolMenu["Power Supply"]->getToolBtn()->click();
 		});
 	}
-
+#endif
 	if (filter->compatible(TOOL_LOGIC_ANALYZER)) {
 		logic_analyzer = new LogicAnalyzer(ctx, filter, toolMenu["Logic Analyzer"]->getToolStopBtn(),
 				&js_engine, this);

@@ -213,6 +213,7 @@ void ManualCalibration::positivePowerSupplySetup()
 
 void ManualCalibration::setupPowerSupplyIio()
 {
+    return;
 	/*For power supply calibration*/
 	struct iio_device *dev1 = iio_context_find_device(ctx, "ad5627");
 	struct iio_device *dev2 = iio_context_find_device(ctx, "ad9963");

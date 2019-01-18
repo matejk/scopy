@@ -1356,10 +1356,8 @@ void SignalGenerator::start()
 			// instead of 12 bit(data is shifted to the left)
 			// Divide by corr when interpolation is used
 			volts_to_raw_coef = (-1 * (1 / vlsb) * 16) / corr;
-			auto f2s = blocks::float_to_short::make(1,
-			                                        volts_to_raw_coef);
-			auto head = blocks::head::make(
-			                    sizeof(short), samples_count);
+            auto f2s = blocks::float_to_short::make(1, volts_to_raw_coef);
+            auto head = blocks::head::make(sizeof(short), samples_count);
 			auto vector = blocks::vector_sink_s::make();
 			auto clamp = analog::rail_ff::make(dac->vOutL(), dac->vOutH());
 
@@ -1373,8 +1371,8 @@ void SignalGenerator::start()
 			const short *data = samples.data();
 
 			if (samples.size()) {
-				iio_channel_write(each, buf, data,
-			                  samples_count * sizeof(short));
+                const auto written = iio_channel_write(each, buf, data, samples_count * sizeof(short));
+                qDebug(CAT_SIGNAL_GENERATOR) << "Written samples: " << written;
 			}
 		}
 

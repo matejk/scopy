@@ -197,19 +197,19 @@ M2kAdc::M2kAdc(struct iio_context *ctx, struct iio_device *adc_dev):
 	apply_m2k_fixes();
 
 	// Hardware gain channels
-	struct iio_device *m2k_fabric = iio_context_find_device(ctx,
-		"m2k-fabric");
-	m_gain_channels.push_back(iio_device_find_channel(m2k_fabric,
-		"voltage0", false));
-	m_gain_channels.push_back(iio_device_find_channel(m2k_fabric,
-		"voltage1", false));
+    struct iio_device *m2k_fabric = iio_context_find_device(ctx, "m2k-fabric");
+
+    if (m2k_fabric) {
+        m_gain_channels.push_back(iio_device_find_channel(m2k_fabric, "voltage0", false));
+        m_gain_channels.push_back(iio_device_find_channel(m2k_fabric, "voltage1", false));
+    }
 
 	// Hardware offset cannels
 	struct iio_device *ad5625 = iio_context_find_device(ctx, "ad5625");
-	m_offset_channels.push_back(iio_device_find_channel(ad5625, "voltage2",
-		true));
-	m_offset_channels.push_back(iio_device_find_channel(ad5625, "voltage3",
-		true));
+    if (ad5625) {
+        m_offset_channels.push_back(iio_device_find_channel(ad5625, "voltage2", true));
+        m_offset_channels.push_back(iio_device_find_channel(ad5625, "voltage3", true));
+    }
 
 	// Check for hardware triggering support
 	struct iio_device *m2k_trigger = iio_context_find_device(ctx,
@@ -255,6 +255,10 @@ void M2kAdc::apply_m2k_fixes()
 
 	struct iio_device *dev = iio_context_find_device(iio_context(),
 		"ad9963");
+
+    if (dev == nullptr) {
+        return;
+    }
 
 	int config1 = 0x05;
 	int config2 = 0x05;
@@ -306,8 +310,7 @@ void M2kAdc::setChnHwOffset(uint chnIdx, double offset)
 	int raw_offset = (int)(offset * (1 << numAdcBits()) * hw_chn_gain *
 		gain / 2.693 / vref) + m_chn_corr_offsets[chnIdx];
 
-	iio_channel_attr_write_longlong(m_offset_channels[chnIdx], "raw",
-		(long long)raw_offset);
+//	iio_channel_attr_write_longlong(m_offset_channels[chnIdx], "raw", (long long)raw_offset);
 
 	m_chn_hw_offsets[chnIdx] = offset;
 }
@@ -322,8 +325,7 @@ void M2kAdc::setChnHwGainMode(uint chnIdx, GainMode gain_mode)
 	const char *str_gain_mode = (gain_mode == GainMode::HIGH_GAIN_MODE) ?
 		"high" : "low";
 
-	iio_channel_attr_write_raw(m_gain_channels[chnIdx], "gain",
-		str_gain_mode, strlen(str_gain_mode));
+//	iio_channel_attr_write_raw(m_gain_channels[chnIdx], "gain", str_gain_mode, strlen(str_gain_mode));
 
 	m_chn_hw_gain_modes[chnIdx] = gain_mode;
 }
