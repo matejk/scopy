@@ -1,0 +1,12 @@
+[submodule "3rdparty/qwt"]
+	path = 3rdparty/qwt
+	url = https://github.com/matejk/qwt.git
+[submodule "3rdparty/qwtpolar"]
+	path = 3rdparty/qwtpolar
+	url = https://github.com/matejk/qwtpolar.git
+[submodule "3rdparty/gnuradio"]
+	path = 3rdparty/gnuradio
+	url = https://github.com/analogdevicesinc/gnuradio
+[submodule "3rdparty/gr-iio"]
+	path = 3rdparty/gr-iio
+	url = https://github.com/analogdevicesinc/gr-iio
