@@ -1,0 +1,10 @@
+Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: warpdrive
+
+Files: *
+Copyright: 2015-2016 Digithurst Bildverarbeitungssysteme GmbH & Co KG
+           2015-2016 GrauData AG
+License: Proprietary
+  All rights reserved.
+  The mtf tool is distributed under GPL-2 license: /usr/share/common-licenses/GPL-2.
+  Source code is available on github: https://github.com/tomaz-beltram/mtf.

@@ -1,0 +1,33 @@
+Source: scopy
+Section: non-free/science
+Priority: optional
+Maintainer: Uberscopes d.o.o. <matej.kenda@uberscopes.com>
+Build-Depends: debhelper (>= 11), cmake, dh-make
+Standards-Version: 4.1.3
+Homepage: http://www.uberscopes.com
+#Vcs-Git: https://github.org/matejk/scopy.git
+
+Package: libqwt-uberscopes
+Section: contrib/libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Qt widgets library for technical applications (runtime, qt5).
+
+Package: libqwtpolar-uberscopes
+Section: contrib/libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Qt widgets library for technical applications (runtime, qt5)
+
+Package: libgnuradio-uberscopes
+Section: contrib/libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: GNU Radio and GNURadio IIO
+
+Package: scopy-uberscopes
+Section: contrib/science
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Scopy customised by uberscopes
+

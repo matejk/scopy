@@ -1,0 +1,55 @@
+#!/usr/bin/make -f
+
+export DH_VERBOSE=1
+FULL_DESTDIR:=$(abspath debian/tmp)
+export CXXFLAGS = -I$(FULL_DESTDIR)/usr/include
+export LDFLAGS = -L$(FULL_DESTDIR)/usr/lib
+
+CMAKE_GNURADIO_OPTS := -DENABLE_INTERNAL_VOLK:BOOL=OFF -DENABLE_GR_FEC:BOOL=OFF \
+-DENABLE_GR_DIGITAL:BOOL=OFF -DENABLE_GR_DTV:BOOL=OFF -DENABLE_GR_ATSC:BOOL=OFF -DENABLE_GR_AUDIO:BOOL=OFF \
+-DENABLE_GR_CHANNELS:BOOL=OFF -DENABLE_GR_NOAA:BOOL=OFF -DENABLE_GR_PAGER:BOOL=OFF \
+-DENABLE_GR_TRELLIS:BOOL=OFF -DENABLE_GR_VOCODER:BOOL=OFF
+
+%:
+	dh $@
+
+# cmake -DCMAKE_PREFIX_PATH=/home/matej/devel/git/uberscope/libs/ ../scopy
+
+override_dh_auto_configure:
+override_dh_auto_build:
+override_dh_auto_test:
+override_dh_auto_install:
+	mkdir -p build/qwt
+	QT_SELECT=qt5 dh_auto_configure --buildsystem=qmake --builddirectory=build/qwt -- ../../3rdparty/qwt/qwt.pro
+	dh_auto_build --buildsystem=qmake --builddirectory=build/qwt
+	dh_auto_install --buildsystem=qmake --builddirectory=build/qwt
+
+	# TODO: Specify additional include and link options
+	mkdir -p debian/build/qwtpolar
+	QT_SELECT=qt5 dh_auto_configure --buildsystem=qmake --builddirectory=build/qwtpolar -- ../../3rdparty/qwtpolar/qwtpolar.pro
+	dh_auto_build --buildsystem=qmake --builddirectory=build/qwtpolar
+	dh_auto_install --buildsystem=qmake --builddirectory=build/qwtpolar
+
+	mkdir -p build/gnuradio
+	dh_auto_configure --buildsystem=cmake --builddirectory=build/gnuradio -- $(CMAKE_GNURADIO_OPTS) ../../3rdparty/gnuradio/
+	dh_auto_build --buildsystem=cmake --builddirectory=build/gnuradio
+	dh_auto_install --buildsystem=cmake --builddirectory=build/gnuradio
+
+	mkdir -p build/griio
+	dh_auto_configure --buildsystem=cmake --builddirectory=build/griio --  -DCMAKE_PREFIX_PATH=$(FULL_DESTDIR)/usr ../../3rdparty/gr-iio/
+	dh_auto_build --buildsystem=cmake --builddirectory=build/griio
+	dh_auto_install --buildsystem=cmake --builddirectory=build/griio
+
+	# TODO: Specify additional include and link options
+	mkdir -p build/scopy
+	dh_auto_configure --buildsystem=cmake --builddirectory=build/scopy --  -DCMAKE_PREFIX_PATH=$(FULL_DESTDIR)/usr ../../
+	dh_auto_build --buildsystem=cmake --builddirectory=build/scopy
+	dh_auto_install --buildsystem=cmake --builddirectory=build/scopy
+
+override_dh_auto_clean:
+	rm -rf build/qwt
+	rm -rf build/qwtpolar
+	rm -rf build/gnuradio
+	rm -rf build/griio
+	rm -rf build/scopy
+
