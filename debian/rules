@@ -1,6 +1,8 @@
 #!/usr/bin/make -f
 
 export DH_VERBOSE=1
+
+# Additional include and link paths for qmake
 FULL_DESTDIR:=$(abspath debian/tmp)
 export CXXFLAGS = -I$(FULL_DESTDIR)/usr/include
 export LDFLAGS = -L$(FULL_DESTDIR)/usr/lib
@@ -13,8 +15,6 @@ CMAKE_GNURADIO_OPTS := -DENABLE_INTERNAL_VOLK:BOOL=OFF -DENABLE_GR_FEC:BOOL=OFF 
 %:
 	dh $@
 
-# cmake -DCMAKE_PREFIX_PATH=/home/matej/devel/git/uberscope/libs/ ../scopy
-
 override_dh_auto_configure:
 override_dh_auto_build:
 override_dh_auto_test:
@@ -24,7 +24,6 @@ override_dh_auto_install:
 	dh_auto_build --buildsystem=qmake --builddirectory=build/qwt
 	dh_auto_install --buildsystem=qmake --builddirectory=build/qwt
 
-	# TODO: Specify additional include and link options
 	mkdir -p debian/build/qwtpolar
 	QT_SELECT=qt5 dh_auto_configure --buildsystem=qmake --builddirectory=build/qwtpolar -- ../../3rdparty/qwtpolar/qwtpolar.pro
 	dh_auto_build --buildsystem=qmake --builddirectory=build/qwtpolar
@@ -40,7 +39,6 @@ override_dh_auto_install:
 	dh_auto_build --buildsystem=cmake --builddirectory=build/griio
 	dh_auto_install --buildsystem=cmake --builddirectory=build/griio
 
-	# TODO: Specify additional include and link options
 	mkdir -p build/scopy
 	dh_auto_configure --buildsystem=cmake --builddirectory=build/scopy --  -DCMAKE_PREFIX_PATH=$(FULL_DESTDIR)/usr ../../
 	dh_auto_build --buildsystem=cmake --builddirectory=build/scopy
