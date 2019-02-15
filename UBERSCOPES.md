@@ -10,6 +10,13 @@ git checkout uberscope-dev
 git submodules update --init --recursive
 ```
 
+## 18.04 only: Add PPA repository for newer version of IIO
+
+```
+sudo add-apt-repository ppa:jorik-kippendief/libiio
+sudo apt update
+```
+
 ## Install Debian build devscripts
 
 ```
