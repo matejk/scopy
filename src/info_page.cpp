@@ -337,7 +337,8 @@ M2kInfoPage::M2kInfoPage(QString uri,
 {
 	ui->extraWidget->setFrameShape(QFrame::NoFrame);
 	ui->extraWidget->setOpenExternalLinks(true);
-	ui->extraWidget->setSource(QUrl("qrc:/m2k.html"));
+//	ui->extraWidget->setSource(QUrl("qrc:/m2k.html"));
+    ui->extraWidget->setSource(QUrl("qrc:/uberscope.html"));
 	ui->extraWidget->setMaximumHeight(700);
 	ui->extraWidget->setMinimumHeight(700);
 }

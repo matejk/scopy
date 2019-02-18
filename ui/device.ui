@@ -162,7 +162,7 @@ background-color: red;
         </property>
         <property name="icon">
          <iconset resource="../resources/resources.qrc">
-          <normaloff>:/menu/ic adalm.png</normaloff>:/menu/ic adalm.png</iconset>
+          <normaloff>:/menu/ic-uberscopes.png</normaloff>:/menu/ic-uberscopes.png</iconset>
         </property>
         <property name="iconSize">
          <size>
