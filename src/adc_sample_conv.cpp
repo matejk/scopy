@@ -93,11 +93,11 @@ void adc_sample_conv::updateCorrectionGain()
 {
         if(m2k_adc) {
             setCorrectionGain(0, m2k_adc->chnCorrectionGain(0));
-            setCorrectionGain(1, m2k_adc->chnCorrectionGain(1));
+//            setCorrectionGain(1, m2k_adc->chnCorrectionGain(1));
             setFilterCompensation(0, m2k_adc->compTable(m2k_adc->sampleRate()));
-            setFilterCompensation(1, m2k_adc->compTable(m2k_adc->sampleRate()));
+//            setFilterCompensation(1, m2k_adc->compTable(m2k_adc->sampleRate()));
             setHardwareGain(0, m2k_adc->gainAt(m2k_adc->chnHwGainMode(0)));
-            setHardwareGain(1, m2k_adc->gainAt(m2k_adc->chnHwGainMode(1)));
+//            setHardwareGain(1, m2k_adc->gainAt(m2k_adc->chnHwGainMode(1)));
         }
 }
 
