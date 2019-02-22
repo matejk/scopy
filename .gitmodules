@@ -9,4 +9,4 @@
 	url = https://github.com/analogdevicesinc/gnuradio
 [submodule "3rdparty/gr-iio"]
 	path = 3rdparty/gr-iio
-	url = https://github.com/analogdevicesinc/gr-iio
+	url = https://github.com/matejk/gr-iio
