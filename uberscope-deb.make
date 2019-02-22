@@ -11,7 +11,9 @@ LNX_DISTRO:=$(shell lsb_release -si | tr A-Z a-z)
 # Linux distribution codename
 LNX_DISTRO_CODENAME:=$(shell lsb_release -sc)
 
-SCOPY_PACKAGE_VERSION:=$(SCOPY_VERSION)+0$(LNX_DISTRO)~0$(LNX_DISTRO_CODENAME)
+TODAY:=$(shell date +%Y%m%d)
+
+SCOPY_PACKAGE_VERSION:=$(SCOPY_VERSION).$(TODAY)+0$(LNX_DISTRO)~0$(LNX_DISTRO_CODENAME)
 
 DEBUILD_OPTS:=--set-envvar "DEBFULLNAME=$(DEBFULLNAME)" --set-envvar "DEBEMAIL=$(DEBEMAIL)"
 
