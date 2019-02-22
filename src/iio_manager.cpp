@@ -63,7 +63,7 @@ iio_manager::iio_manager(unsigned int block_id,
 		hier_block2::connect(dummy_copy, i, dummy, i);
 	}
 
-	dummy_copy->set_enabled(true);
+//	dummy_copy->set_enabled(true);
 
 	auto timeout_b = gnuradio::get_initial_sptr(new timeout_block("msg"));
 	hier_block2::msg_connect(iio_block, "msg", timeout_b, "msg");

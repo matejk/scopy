@@ -229,6 +229,11 @@ M2kAdc::M2kAdc(struct iio_context *ctx, struct iio_device *adc_dev):
 
 	// Filters applied while decimating affect the amplitude of the received
 	// data
+// Uberscopes
+    m_filt_comp_table[1E9] = 1.00;
+//    m_filt_comp_table[5E8] = 1.00;
+// Uberscopes
+
 	m_filt_comp_table[1E8] = 1.00;
 	m_filt_comp_table[1E7] = 1.05;
 	m_filt_comp_table[1E6] = 1.10;
